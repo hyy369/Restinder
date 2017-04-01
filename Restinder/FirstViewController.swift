@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Alamofire
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var searchText: UITextField!

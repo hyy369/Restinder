@@ -1,0 +1,6 @@
+framework module Pods_Restinder {
+  umbrella header "Pods-Restinder-umbrella.h"
+
+  export *
+  module * { export * }
+}

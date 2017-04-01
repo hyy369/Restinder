@@ -90,6 +90,21 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="inteRESTIN!" image="first" id="acW-dT-cKf"/>
+                    <connections>
+                        <outlet property="bigImage" destination="ajK-HU-eXt" id="JO5-Ot-kCO"/>
+                        <outlet property="distanceLabel" destination="kjJ-o3-Nu4" id="awL-wp-yNo"/>
+                        <outlet property="image1" destination="ypT-pQ-xnR" id="LUN-s9-Dcd"/>
+                        <outlet property="image2" destination="ovg-S6-mMV" id="E2t-p2-Rei"/>
+                        <outlet property="image3" destination="hXp-Ug-bf6" id="vj0-zN-k3n"/>
+                        <outlet property="image4" destination="MjE-X1-do6" id="90n-0c-Zwe"/>
+                        <outlet property="image5" destination="Swz-P6-NcJ" id="6oj-c6-5hl"/>
+                        <outlet property="image6" destination="4lf-P3-WG9" id="VaS-Wq-ZQf"/>
+                        <outlet property="image7" destination="vUw-Uv-Cm2" id="g50-qV-lR9"/>
+                        <outlet property="image8" destination="149-FP-5Bj" id="8AJ-b9-KaA"/>
+                        <outlet property="nameLabel" destination="oBx-73-jhc" id="oX8-rD-2FG"/>
+                        <outlet property="priceLabel" destination="iGS-fg-7wo" id="HvO-Ob-8oN"/>
+                        <outlet property="ratingLabel" destination="fx2-f0-uZ4" id="wdu-ET-omW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>

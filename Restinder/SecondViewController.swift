@@ -15,6 +15,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
     var lat = ""
     var long = ""
+    var url = "https://www.yelp.com/"
 
     @IBOutlet weak var businessImage: UIImageView!
     @IBOutlet weak var name: UILabel!
@@ -35,6 +36,10 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        businessImage.isUserInteractionEnabled = true
+        businessImage.addGestureRecognizer(tapGestureRecognizer)
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,16 +57,14 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func luckyButton(_ sender: AnyObject) {
         getSearchResult()
-//        let result = getSearchResult()
-//        print(result)
-//        self.name.text = result.name
-//        self.ratingText.text = "\(result.rating) stars based on \(result.reviewCount) reviews."
-//        let distanceInMile = result.distance/1609
-//        self.distanceText.text = "\(distanceInMile) miles away."
-//        if let checkedUrl = URL(string: result.imageUrl) {
-//            businessImage.contentMode = .scaleAspectFit
-//            downloadImage(checkedUrl)
-//        }
+    }
+    
+    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let tappedImage = tapGestureRecognizer.view as! UIImageView
+        
+        // Your action
+        UIApplication.shared.openURL(URL(string: url)!)
     }
     
     func getSearchResult() -> (name: String, rating: Float, reviewCount: Int, distance: Int, url: String, imageUrl: String){
@@ -69,7 +72,6 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         var rating: Float = 0
         var reviewCount = 0
         var distance = 0
-        var url = ""
         var imageUrl = ""
         var total: UInt32 = 0
         print("lat=\(lat)")
@@ -123,7 +125,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
                     }
                     if let resultUrl = business["url"] as? String {
                         print ("Go to Yelp page: \(resultUrl)")
-                        url = resultUrl
+                        self.url = resultUrl
                     }
                     if let resultImageUrl = business["image_url"] as? String {
                         print ("Image: \(resultImageUrl)")

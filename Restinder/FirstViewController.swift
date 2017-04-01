@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import CoreLocation
 
-class FirstViewController: UIViewController {
+class FirstViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var searchText: UITextField!
+    let locationManager = CLLocationManager()
+    var lat = ""
+    var long = ""
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,22 +27,22 @@ class FirstViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location:CLLocationCoordinate2D = manager.location!.coordinate
+        lat = String(location.latitude)
+        long = String(location.longitude)
+    }
     
-    @IBAction func sendButtonTapped(sender: AnyObject) {
-
-        let userNameValue = searchText.text
-        
-        if isStringEmpty(userNameValue!) == true
-        {
-            return
-        }
+    @IBAction func feelLucky(sender: AnyObject) {
         
         // Send HTTP GET Request
         
         // Define server side script URL
         let scriptUrl = "https://api.yelp.com/v3/businesses/search"
         // Add one parameter
-        let urlWithParams = scriptUrl + "?term=\(userNameValue!)&location='23185'"
+        print(lat)
+        print(long)
+        let urlWithParams = scriptUrl + "?&latitude=\(lat)&longitude=\(long)"
         // Create NSURL Object
         let myUrl = NSURL(string: urlWithParams);
         
@@ -68,11 +74,19 @@ class FirstViewController: UIViewController {
                 if let convertedJsonIntoDict = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? NSDictionary {
                     
                     // Print out dictionary
-                    print(convertedJsonIntoDict)
+                    //print(convertedJsonIntoDict)
                     
                     // Get value by key
-//                    let firstNameValue = convertedJsonIntoDict["userName"] as? String
-//                    print(firstNameValue!)
+                    if let businesses = convertedJsonIntoDict["businesses"] as? NSArray {
+                        for business in businesses {
+                            //print (firstBusiness)
+                        
+                            if let firstBusinessName = business["name"] as? String {
+                                print (firstBusinessName)
+                            }
+                        }
+                    }
+                    
                     
                 }
             } catch let error as NSError {

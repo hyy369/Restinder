@@ -12,7 +12,6 @@
 		6407B4D41E8F153900325E5E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6407B4D21E8F153900325E5E /* Main.storyboard */; };
 		6407B4D61E8F153900325E5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6407B4D51E8F153900325E5E /* Assets.xcassets */; };
 		6407B4D91E8F153900325E5E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6407B4D71E8F153900325E5E /* LaunchScreen.storyboard */; };
-		6407B4E11E8F174C00325E5E /* searchYelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6407B4E01E8F174C00325E5E /* searchYelp.swift */; };
 		6407B4E31E8F2AC300325E5E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6407B4E21E8F2AC300325E5E /* FirstViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +23,6 @@
 		6407B4D51E8F153900325E5E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6407B4D81E8F153900325E5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6407B4DA1E8F153900325E5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6407B4E01E8F174C00325E5E /* searchYelp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = searchYelp.swift; sourceTree = "<group>"; };
 		6407B4E21E8F2AC300325E5E /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,7 +63,6 @@
 				6407B4D51E8F153900325E5E /* Assets.xcassets */,
 				6407B4D71E8F153900325E5E /* LaunchScreen.storyboard */,
 				6407B4DA1E8F153900325E5E /* Info.plist */,
-				6407B4E01E8F174C00325E5E /* searchYelp.swift */,
 			);
 			path = Restinder;
 			sourceTree = "<group>";
@@ -103,6 +100,7 @@
 					6407B4C81E8F153900325E5E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = N2QQ9XZNYU;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -144,7 +142,6 @@
 			files = (
 				6407B4D11E8F153900325E5E /* SecondViewController.swift in Sources */,
 				6407B4CD1E8F153900325E5E /* AppDelegate.swift in Sources */,
-				6407B4E11E8F174C00325E5E /* searchYelp.swift in Sources */,
 				6407B4E31E8F2AC300325E5E /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,6 +264,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Yangyang-He.Restinder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -281,6 +279,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Yangyang-He.Restinder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -303,6 +302,7 @@
 				6407B4DF1E8F153900325E5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

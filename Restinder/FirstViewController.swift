@@ -27,90 +27,82 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location:CLLocationCoordinate2D = manager.location!.coordinate
         lat = String(location.latitude)
         long = String(location.longitude)
     }
     
-    @IBAction func feelLucky(sender: AnyObject) {
-        
+    @IBAction func searchButtonTapped(_ sender: AnyObject) {
+        getSearchResult()
+    }
+    
+    func getSearchResult() {
+        print("lat=\(lat)")
+        print("long=\(long)")
         // Send HTTP GET Request
-        
+        if lat.characters.count < 1 {
+            lat = "37.2698845"
+        }
+        if long.characters.count < 1 {
+            long = "-76.7159085"
+        }
+        print("lat=\(lat)")
+        print("long=\(long)")
         // Define server side script URL
-        let scriptUrl = "https://api.yelp.com/v3/businesses/search"
-        // Add one parameter
-        print(lat)
-        print(long)
-        let urlWithParams = scriptUrl + "?&latitude=\(lat)&longitude=\(long)"
+        let apiUrl = "https://api.yelp.com/v3/businesses/search"
+        let urlWithParams = apiUrl + "?term='food'&latitude="+lat+"&longitude="+long+"&open_now=true"
         // Create NSURL Object
-        let myUrl = NSURL(string: urlWithParams);
-        
+        let myUrl = URL(string: urlWithParams);
         // Creaste URL Request
-        let request = NSMutableURLRequest(URL:myUrl!);
-        
-        // Set request HTTP method to GET. It could be POST as well
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url:myUrl!);
+        // Set request HTTP method to GET.
+        request.httpMethod = "GET"
         request.addValue("bearer a8iWu9Qx6o1dAhCHsHpIGyjjQDR6vYW3X0NSuCEoOUj5dO-7ZVC-Vrvu_kvOS-cCPTZxJOcAbz6OzSTJHfH7xlW3KjDBzfZt8tjQCYdQZF4g6aHFG9qARo1dRpfeWHYx", forHTTPHeaderField: "Authorization");
-        
-        // Excute HTTP Request
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
-            data, response, error in
-            
-            // Check for error
-            if error != nil
-            {
-                print("error=\(error)")
-                return
-            }
-            
-            // Print out response string
-            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-            print("responseString = \(responseString)")
-            
-            
-            // Convert server json response to NSDictionary
-            do {
-                if let convertedJsonIntoDict = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? NSDictionary {
-                    
-                    // Print out dictionary
-                    //print(convertedJsonIntoDict)
-                    
-                    // Get value by key
-                    if let businesses = convertedJsonIntoDict["businesses"] as? NSArray {
-                        for business in businesses {
-                            //print (firstBusiness)
+        sendRequest(request as URLRequest) { data in
+            if let data = data {
+                // do something
+                do {
+                    if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                         
-                            if let firstBusinessName = business["name"] as? String {
-                                print (firstBusinessName)
+                        // Get value by key
+                        if let businesses = convertedJsonIntoDict["businesses"] as? NSArray {
+                            var i = 0;
+                            while (i<9) {
+                                let business = businesses[i] as AnyObject
+                                if let businessName = business["name"] as? String {
+                                    print (businessName)
+                                }
+                                if let rating = business["rating"] as? Float {
+                                    print ("\(rating) stars, based on ", terminator:"")
+                                }
+                                if let reviewCount = business["review_count"] as? Int {
+                                    print ("\(reviewCount) reviews.")
+                                }
+                                if let distance = business["distance"] as? Float {
+                                    print ("\(distance) meters away.")
+                                }
+                                i = i+1
                             }
                         }
                     }
-                    
-                    
+                } catch let error as NSError {
+                    print(error.localizedDescription)
                 }
-            } catch let error as NSError {
-                print(error.localizedDescription)
+
             }
-            
-        }
-        
-        task.resume()
-        
-    }
+        }}
+
     
-    func isStringEmpty(stringValue:String) -> Bool
-    {
-        var returnValue = false
+    func sendRequest (_ request: URLRequest,completion: @escaping (Data?)->()){
         
-        if stringValue.isEmpty  == true
-        {
-            returnValue = true
-            return returnValue
-        }
-        
-        return returnValue
-        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            if error != nil{
+                return completion(nil)
+            }else{
+                return completion(data)
+            }
+            }) .resume()
     }
 
 

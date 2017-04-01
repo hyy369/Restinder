@@ -21,6 +21,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var ratingText: UILabel!
     @IBOutlet weak var distanceText: UILabel!
+    @IBOutlet weak var priceText: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -62,17 +63,16 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
         let tappedImage = tapGestureRecognizer.view as! UIImageView
-        
-        // Your action
         UIApplication.shared.openURL(URL(string: url)!)
     }
     
-    func getSearchResult() -> (name: String, rating: Float, reviewCount: Int, distance: Int, url: String, imageUrl: String){
+    func getSearchResult(){
         var name = ""
         var rating: Float = 0
         var reviewCount = 0
         var distance = 0
         var imageUrl = ""
+        var price = ""
         var total: UInt32 = 0
         print("lat=\(lat)")
         print("long=\(long)")
@@ -131,19 +131,27 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
                         print ("Image: \(resultImageUrl)")
                         imageUrl = resultImageUrl
                     }
+                    if let resultPrice = business["price"] as? String {
+                        print ("Price: \(resultPrice)")
+                        price = resultPrice
+                    }
                 }
             }
             self.name.text = name
             self.ratingText.text = "\(rating) stars based on \(reviewCount) reviews."
             let distanceInMile = distance/1609
-            self.distanceText.text = "\(distanceInMile) miles away."
+            if distanceInMile < 1 {
+                self.distanceText.text = "Less than 1 mile away."
+            } else {
+                self.distanceText.text = "\(distanceInMile) miles away."
+            }
+            self.priceText.text = price
             if let checkedUrl = URL(string: imageUrl) {
                 self.businessImage.contentMode = .scaleAspectFit
                 self.downloadImage(checkedUrl)
             }
 
         }
-        return (name, rating, reviewCount, distance, url, imageUrl)
     }
     
     func getDataFromUrl(_ url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {

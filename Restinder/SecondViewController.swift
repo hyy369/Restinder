@@ -22,9 +22,14 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var ratingText: UILabel!
     @IBOutlet weak var distanceText: UILabel!
     @IBOutlet weak var priceText: UILabel!
+    @IBOutlet weak var actIndicator: UIActivityIndicatorView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        self.actIndicator.isHidden = true
         
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
@@ -43,6 +48,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         businessImage.addGestureRecognizer(tapGestureRecognizer)
     }
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -56,21 +62,20 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         long = String(location.longitude)
     }
     
+    
     @IBAction func luckyButton(_ sender: AnyObject) {
         getSearchResult()
     }
     
-    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
-    {
-        let tappedImage = tapGestureRecognizer.view as! UIImageView
-        UIApplication.shared.openURL(URL(string: url)!)
-    }
     
     func getSearchResult(){
+        actIndicator.isHidden = false
+        actIndicator.startAnimating()
+        
         var name = ""
         var rating: Float = 0
         var reviewCount = 0
-        var distance = 0
+        var distance: Float = 0
         var imageUrl = ""
         var price = ""
         var total: UInt32 = 0
@@ -121,7 +126,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
                     }
                     if let resultDistance = business["distance"] as? Float {
                         print ("\(resultDistance) meters away.")
-                        distance = Int(resultDistance)
+                        distance = resultDistance
                     }
                     if let resultUrl = business["url"] as? String {
                         print ("Go to Yelp page: \(resultUrl)")
@@ -143,16 +148,19 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
             if distanceInMile < 1 {
                 self.distanceText.text = "Less than 1 mile away."
             } else {
-                self.distanceText.text = "\(distanceInMile) miles away."
+                let distanceStr = String(format: "%.1f", distanceInMile)
+                self.distanceText.text = "\(distanceStr) miles away."
             }
             self.priceText.text = price
             if let checkedUrl = URL(string: imageUrl) {
-                self.businessImage.contentMode = .scaleAspectFit
+                self.businessImage.contentMode = .scaleToFill
                 self.downloadImage(checkedUrl)
             }
-
+            self.actIndicator.stopAnimating()
+            self.actIndicator.isHidden = true
         }
     }
+    
     
     func getDataFromUrl(_ url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
         URLSession.shared.dataTask(with: url) {
@@ -171,6 +179,12 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
                 self.businessImage.image = UIImage(data: data)
             }
         }
+    }
+    
+    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let tappedImage = tapGestureRecognizer.view as! UIImageView
+        UIApplication.shared.openURL(URL(string: url)!)
     }
 }
 
